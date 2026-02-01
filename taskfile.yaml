@@ -127,6 +127,25 @@ tasks:
       - cd libs/storage && go mod tidy
       - cd backend && go mod tidy
       - cd consumer && go mod tidy
+  
+  ecr:registry:docker:
+    silent: true
+    cmds:
+      - |
+        aws ecr get-login-password --region ap-south-1 \
+        | docker login --username AWS --password-stdin \
+        ${REGISTRY_URL}
+  
+  ecr:registry:k8s:
+    silent: false
+    cmds:
+      - |
+        kubectl create secret docker-registry ecr-secret \
+        --docker-server=${REGISTRY_URL} \
+        --docker-username=AWS \
+        --docker-password=$(aws ecr get-login-password --region ${AWS_REGION}) \
+        --namespace playstack \
+        --dry-run=client -o yaml | kubectl apply -f -
 
   sonar:
     var:

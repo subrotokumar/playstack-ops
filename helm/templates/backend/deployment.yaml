@@ -17,9 +17,11 @@ spec:
       labels:
         app: {{ .Chart.Name }}-{{ .Values.backend.name }}
     spec:
+      imagePullSecrets:
+      - name: playstack-image-registry-sk
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.backend.name }}
-        image: {{ .Values.repository }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
+        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.transcoder.name }}
         imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort | int }}

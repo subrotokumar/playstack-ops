@@ -1,0 +1,35 @@
+{{ if .Values.imageRegistryCron.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $.Chart.Name }}-{{ .Values.imageRegistryCron.name }}-cj
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+spec:
+  schedule: {{ .Values.imageRegistryCron.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+        #   serviceAccountName: ecr-refresh-sa
+          restartPolicy: OnFailure
+          containers:
+            - name: refresh
+              image: amazon/aws-cli:2
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  aws ecr get-login-password --region {{ .Values.imageRegistryCron.awsRegion }}  \
+                  | kubectl create secret docker-registry playstack-image-registry-sk \
+                    --docker-server={{ .Values.registry }} \
+                    --docker-username=AWS \
+                    --docker-password-stdin \
+                    --namespace {{ .Values.namespace | default .Release.Namespace }} \
+                    --dry-run=client -o yaml \
+                  | kubectl apply -f -
+              envFrom:
+                {{- range .Values.imageRegistryCron.secretRef }}
+                - secretRef:
+                    name: {{ $.Chart.Name }}-{{ . }}-sk
+                {{- end }}
+{{ end }}

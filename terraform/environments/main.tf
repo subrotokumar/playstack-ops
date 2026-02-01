@@ -33,8 +33,8 @@ module "s3_notification" {
 }
 
 
-module "ecr_image_registry" {
+module "backend_image_registry" {
   source = "../modules/ecr"
 
-  image_registry = var.image_registry
+  image_registry = "${var.image_registry}/backend"
 } 

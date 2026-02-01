@@ -1,6 +1,6 @@
 replicaCount: 1
 namespace: playstack
-repository: localhost:5001
+registry: localhost:5001
 environment: dev
 syncSecret: true
 
@@ -24,7 +24,7 @@ service:
   externalPort: 8080
 
 transcoder:
-  enabled: true
+  enabled: false
   name: transcoder
   image: playstack/transocder
   imagePullPolicy: Always
@@ -52,6 +52,15 @@ transcoder:
   limits:
     cpu: "1"
     memory: "500Mi"
+
+
+imageRegistryCron:
+  enabled: false
+  name: rotate-image-registry
+  schedule: "0 */6 * * *"
+  awsRegion: ap-south-1
+  secretRef:
+    - aws
 
 serviceAccount:
   create: true

@@ -19,7 +19,7 @@ spec:
         restartPolicy: Never
         containers:
           - name: {{ .Chart.Name }}-{{ .Values.transcoder.name }}
-            image: {{ .Chart.Name }}/{{ .Values.transcoder.name }}
+            image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
             envFrom:
             {{- range .Values.transcoder.secretRef }}
             - secretRef:

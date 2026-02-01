@@ -8,10 +8,14 @@ spec:
   source:
     repoURL: https://gitlab.com/subrotokumar/playstack-ops.git
     targetRevision: HEAD
-    path: helm
+    path: helm/
     helm:
       valueFiles:
-        - helm/values.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: playstack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
