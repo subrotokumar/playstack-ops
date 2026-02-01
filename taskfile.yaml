@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 dotenv:
   - .env
@@ -14,14 +14,24 @@ tasks:
     desc: "List all available tasks"
     cmds:
       - task --list-all
-        
+
+  setup:
+    dir: k8s
+    silent: true
+    desc: "setup local kubernetes development environment"
+    cmds:
+      - ./setup.local.sh
+      - ./setup.istio.sh
+      - ./setup.keda.sh
+      - ./setup.argocd.sh
+
   encrypt:
     silent: true
     desc: "Encrypt .env and terraform.tfvars files"
     cmds:
       - sops -e -i .env
       - sops -e -i terraform/environments/terraform.tfvars
-      - sops -e -i k8s/helm/values.secret.yaml
+      - sops -e -i helm/values.secret.yaml
       - sops -e -i example.env
 
   decrypt:
@@ -30,7 +40,7 @@ tasks:
     cmds:
       - sops -d -i .env
       - sops -d -i terraform/environments/terraform.tfvars
-      - sops -d -i k8s/helm/values.secret.yaml
+      - sops -d -i helm/values.secret.yaml
       - sops -d -i example.env
 
   tf:plan:
@@ -45,21 +55,21 @@ tasks:
       approve: false
     dir: terraform/environments
     desc: "Apply Terraform/OpenTofu plan to the environment"
-    cmds: 
+    cmds:
       - tofu apply
-  
+
   tf:apply:auto:
     silent: true
     dir: terraform/environments
     desc: "Apply Terraform/OpenTofu plan (auto approve)"
     cmds:
       - tofu apply --auto-approve
-  
+
   tf:unlock:
     silent: true
     dir: terraform/environments
     var:
-      ID: 
+      ID:
     desc: "Apply Terraform/OpenTofu plan (auto approve)"
     cmds:
       - tofu force-unlock {{.ID}}
@@ -81,23 +91,23 @@ tasks:
     dir: terraform/environments
     desc: "Initialize Terraform/OpenTofu with remote backend"
     cmds: [tofu output]
-  
+
   tf:init:
     silent: true
     dir: terraform/environments
     desc: "Initialize Terraform/OpenTofu with remote backend"
-    cmds: 
-    - |
-      tofu init \
-      -backend-config="address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME" \
-      -backend-config="lock_address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME/lock" \
-      -backend-config="unlock_address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME/lock" \
-      -backend-config="username=$GITLAB_USERNAME" \
-      -backend-config="password=$GITLAB_ACCESS_TOKEN" \
-      -backend-config="lock_method=POST" \
-      -backend-config="unlock_method=DELETE" \
-      -backend-config="retry_wait_min=5"
-        
+    cmds:
+      - |
+        tofu init \
+        -backend-config="address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME" \
+        -backend-config="lock_address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME/lock" \
+        -backend-config="unlock_address=https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/terraform/state/$TF_STATE_NAME/lock" \
+        -backend-config="username=$GITLAB_USERNAME" \
+        -backend-config="password=$GITLAB_ACCESS_TOKEN" \
+        -backend-config="lock_method=POST" \
+        -backend-config="unlock_method=DELETE" \
+        -backend-config="retry_wait_min=5"
+
   swagger:init:
     desc: Generate Swagger documation of Gen Service
     cmds:
@@ -110,7 +120,7 @@ tasks:
         -o ./backend/swagger
 
   work:sync:
-    cmds: 
+    cmds:
       - cd libs/core && go mod tidy
       - cd libs/idp && go mod tidy
       - cd libs/queue && go mod tidy
@@ -122,7 +132,7 @@ tasks:
     var:
       SONAR_ORG: ${SONAR_ORG}
       SONAR_PROJECT_KEY: ${SONAR_PROJECT_KEY}
-    cmds: 
+    cmds:
       - |
         sonar-scanner \
         -Dsonar.organization={{.SONAR_ORG}} \
@@ -141,8 +151,8 @@ tasks:
         -Dsonar.links.ci=${CI_PIPELINE_URL} \
         -Dsonar.links.scm=${CI_REPOSITORY_URL} \
         -Dsonar.branch.name=${CI_COMMIT_REF_NAME}
-  
+
   helm:template:
     silent: true
     dir: k8s
-    cmds: [helm template playstack ./helm] 
+    cmds: [helm template playstack ./helm]

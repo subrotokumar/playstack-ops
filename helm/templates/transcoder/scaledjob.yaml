@@ -32,17 +32,17 @@ spec:
               limits:
                 cpu:  {{ .Values.transcoder.limits.cpu }}
                 memory: {{ .Values.transcoder.limits.memory }}
-        volumes:
-          - name: workdir
-            emptyDir:
-              sizeLimit: 20Gi
+        # volumes:
+        #   - name: workdir
+        #     emptyDir:
+        #       sizeLimit: 20Gi
 
   triggers:
     - type: {{ .Values.transcoder.trigger.type }}
       authenticationRef:
         name: {{ .Chart.Name }}-{{ .Values.transcoder.triggerAuthorization.name }}-ta
       metadata:
-        queueURL: {{ .Values.transcoder.trigger.queueURL }}
+        queueURL: "{{ .Values.transcoder.trigger.queueURL }}"
         queueLength: {{ .Values.transcoder.trigger.queueLength }}
         awsRegion: {{ .Values.transcoder.trigger.awsRegion }}
 {{ end }}

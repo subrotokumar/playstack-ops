@@ -2,6 +2,7 @@ replicaCount: 1
 namespace: playstack
 repository: localhost:5001
 environment: dev
+syncSecret: true
 
 backend:
   enabled: true
@@ -36,7 +37,7 @@ transcoder:
   trigger: 
     type: aws-sqs-queue
     queueURL: https://sqs.ap-south-1.amazonaws.com/298228976419/playstack-bucket-trigger-queue
-    queueLength: 1
+    queueLength: "1"
     awsRegion: ap-south-1
   secretRef:
     - aws
