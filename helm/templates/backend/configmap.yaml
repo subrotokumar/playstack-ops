@@ -1,3 +1,4 @@
+{{ if .Values.backend.enabled }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -8,3 +9,4 @@ metadata:
     env: {{ .Values.environment }}
 data:
   SERVICE_ENV: {{ .Values.environment }}
+{{ end }}
