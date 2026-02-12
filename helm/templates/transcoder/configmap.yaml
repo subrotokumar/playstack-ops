@@ -9,4 +9,5 @@ metadata:
     env: {{ .Values.environment }}
 data:
   SERVICE_ENV: {{ .Values.environment }} 
+  NOTIFIER_SERVICE_ENDPOINT: "{{ .Chart.Name }}-{{ .Values.backend.name }}-svc:{{ .Values.service.externalPort }}"
 {{ end }}

@@ -21,6 +21,12 @@ spec:
           - name: {{ .Chart.Name }}-{{ .Values.transcoder.name }}
             image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
             envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-{{ .Values.transcoder.name }}-cm"
+            {{- range .Values.backend.configMapRef }}
+            - configMapRef:
+                name: {{ $.Chart.Name }}-{{ . }}-cm
+            {{- end }}
             {{- range .Values.transcoder.secretRef }}
             - secretRef:
                 name: {{ $.Chart.Name }}-{{ . }}-sk

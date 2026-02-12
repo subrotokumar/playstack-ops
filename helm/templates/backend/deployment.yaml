@@ -26,9 +26,13 @@ spec:
         ports:
         - containerPort: {{ .Values.service.internalPort | int }}
         envFrom:
+        - configMapRef:
+            name: "{{ .Chart.Name }}-{{ .Values.backend.name }}-cm"
+        {{- if .Values.backend.configMapRef }}
         {{- range .Values.backend.configMapRef }}
         - configMapRef:
             name: {{ $.Chart.Name }}-{{ . }}-cm
+        {{- end }}
         {{- end }}
         {{- range .Values.backend.secretRef }}
         - secretRef:

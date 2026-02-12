@@ -9,8 +9,7 @@ backend:
   name: backend
   image: playstack/backend
   imagePullPolicy: Always
-  configMapRef: 
-    - backend
+  configMapRef: []
   secretRef:
     - basicauth
     - database
@@ -39,6 +38,8 @@ transcoder:
     queueURL: https://sqs.ap-south-1.amazonaws.com/298228976419/playstack-bucket-trigger-queue
     queueLength: "1"
     awsRegion: ap-south-1
+
+  configMapRef: []
   secretRef:
     - aws
 
