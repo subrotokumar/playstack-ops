@@ -335,3 +335,4 @@ gosec-report.json
 data/
 
 *.secret.yaml
+data/

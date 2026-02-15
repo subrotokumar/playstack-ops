@@ -30,6 +30,9 @@ output "main_media_bucket_arn" {
   value = module.main_media_bucket.bucket_arn
 }
 
+output "main_media_bucket_regional_domain_name" {
+  value = module.main_media_bucket.regional_domain_name
+}
 
 output "bucket_trigger_queue" {
   value = module.sqs.sqs_queue
