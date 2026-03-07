@@ -12,7 +12,7 @@ if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true
 fi
 
 # Create Local K8s Cluster with 1 control-plane and 2 worker nodes
-cat <<EOF | kind create --name aemeath cluster --config=-
+cat <<EOF | kind create --name x cluster --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:

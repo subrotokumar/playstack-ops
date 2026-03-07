@@ -1,0 +1,31 @@
+{{ if .Values.imageRegistryCron.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $.Chart.Name }}-ecr-refresh-sa
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $.Chart.Name }}-ecr-refresh-role
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $.Chart.Name }}-ecr-refresh-rb
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $.Chart.Name }}-ecr-refresh-sa
+    namespace: {{ .Values.namespace | default .Release.Namespace }}
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: {{ $.Chart.Name }}-ecr-refresh-role
+{{ end }}

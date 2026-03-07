@@ -21,7 +21,7 @@ spec:
       - name: playstack-image-registry-sk
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.backend.name }}
-        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.transcoder.name }}
+        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
         imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort | int }}
