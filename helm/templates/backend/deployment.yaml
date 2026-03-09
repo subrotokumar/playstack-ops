@@ -5,8 +5,10 @@ metadata:
   name: {{ .Chart.Name }}-{{ .Values.backend.name }}
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    env: {{ .Values.environment }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/environment: {{ .Values.environment }}
 spec:
   selector:
     matchLabels:
@@ -21,7 +23,7 @@ spec:
       - name: playstack-image-registry-sk
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.backend.name }}
-        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
+        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}:{{ .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort | int }}

@@ -3,9 +3,10 @@ namespace: playstack
 registry: localhost:5001
 environment: dev
 syncSecret: true
+imageRegistrySecret: playstack-image-registry-sk
 
 backend:
-  enabled: true
+  enabled: false
   name: backend
   image: playstack/backend
   imagePullPolicy: Always
@@ -56,9 +57,9 @@ transcoder:
 
 
 imageRegistryCron:
-  enabled: false
+  enabled: true
   name: rotate-image-registry
-  schedule: "0 */6 * * *"
+  schedule: "* */6 * * *"
   awsRegion: ap-south-1
   secretRef:
     - aws
@@ -84,7 +85,7 @@ securityContext:
   runAsUser: 1000
 
 httpRoute:
-  enabled: true
+  enabled: false
   annotations: {}
   parentRefs:
   - name: app-gateway

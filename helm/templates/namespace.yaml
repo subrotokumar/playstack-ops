@@ -3,6 +3,8 @@ kind: Namespace
 metadata:
   name: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    env: {{ .Values.environment }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/environment: {{ .Values.environment }}
 spec: {}

@@ -5,8 +5,10 @@ metadata:
   name: "{{ .Chart.Name }}-{{ .Values.backend.name }}-cm"
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    env: {{ .Values.environment }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/environment: {{ .Values.environment }}
 data:
   SERVICE_ENV: {{ .Values.environment }}
 {{ end }}
