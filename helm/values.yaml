@@ -3,7 +3,8 @@ namespace: playstack
 registry: localhost:5001
 environment: dev
 syncSecret: true
-imageRegistrySecret: playstack-image-registry-sk
+imageRegistrySecret: image-registry
+appVersion: 0.1.0
 
 backend:
   enabled: false

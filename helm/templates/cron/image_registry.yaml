@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ .Chart.Name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: {{ .Values.appVersion }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/environment: {{ .Values.environment }}
 spec:
@@ -30,7 +30,7 @@ spec:
 
                   ECR_PASSWORD=$(aws ecr get-login-password --region {{ .Values.imageRegistryCron.awsRegion }})
 
-                  kubectl create secret {{ .Values.imageRegistrySecret }} playstack-image-registry-sk \
+                  kubectl create secret {{ .Chart.Name }}-{{ .Values.imageRegistrySecret }}-sk playstack-image-registry-sk \
                     --docker-server={{ .Values.registry }} \
                     --docker-username=AWS \
                     --docker-password="${ECR_PASSWORD}" \
