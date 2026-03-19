@@ -336,3 +336,6 @@ data/
 
 *.secret.yaml
 data/
+
+values.secret.yaml
+values.secret.yml

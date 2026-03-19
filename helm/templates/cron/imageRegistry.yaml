@@ -30,7 +30,7 @@ spec:
 
                   ECR_PASSWORD=$(aws ecr get-login-password --region {{ .Values.imageRegistryCron.awsRegion }})
 
-                  kubectl create secret {{ .Chart.Name }}-{{ .Values.imageRegistrySecret }}-sk playstack-image-registry-sk \
+                  kubectl create secret docker-registry {{ .Chart.Name }}-{{ .Values.imageRegistrySecret }}-sk \
                     --docker-server={{ .Values.registry }} \
                     --docker-username=AWS \
                     --docker-password="${ECR_PASSWORD}" \

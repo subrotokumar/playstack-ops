@@ -47,6 +47,10 @@ output "bucket_trigger_queue_url" {
   value = module.sqs.sqs_queue_url
 }
 
-output "image_registry_url" {
+output "image_registry_url_backend" {
   value = module.backend_image_registry.registry_url
+}
+
+output "image_registry_url_transcoder" {
+  value = module.transcoder_image_registry.registry_url
 }

@@ -34,6 +34,26 @@ tasks:
       - sops -e -i helm/values.secret.yaml
       - sops -e -i example.env
 
+  kubeseal:
+    silent: true
+    cmds:
+      - |
+        helm template playstack helm  -f helm/values.secret.yaml -f helm/values.secret.yaml \
+        | kubeseal --cert ~/.config/sealedsecret/cert.pem -o yaml --allow-empty-data \
+        > helm/templates/sealedSecret.yaml
+  
+  imagesecret:
+    silent: true
+    cmds:
+      - |
+        ECR_PASSWORD=$(aws ecr get-login-password --region ${AWS_REGION})
+        kubectl create secret docker-registry playstack-image-registry-sk \
+                    --docker-server=${REGISTRY_URL} \
+                    --docker-username=AWS \
+                    --docker-password="${ECR_PASSWORD}" \
+                    --namespace playstack
+
+
   decrypt:
     silent: true
     desc: "Decrypt .env and terraform.tfvars files"

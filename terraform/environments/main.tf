@@ -38,3 +38,9 @@ module "backend_image_registry" {
 
   image_registry = "${var.image_registry}/backend"
 } 
+
+module "transcoder_image_registry" {
+  source = "../modules/ecr"
+
+  image_registry = "${var.image_registry}/transcoder"
+} 

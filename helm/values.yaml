@@ -1,13 +1,12 @@
 replicaCount: 1
 namespace: playstack
-registry: localhost:5001
-environment: dev
-syncSecret: true
+registry: 298228976419.dkr.ecr.ap-south-1.amazonaws.com
+syncSecret: false
 imageRegistrySecret: image-registry
 appVersion: 0.1.0
 
 backend:
-  enabled: false
+  enabled: true
   name: backend
   image: playstack/backend
   imagePullPolicy: Always
@@ -25,7 +24,7 @@ service:
   externalPort: 8080
 
 transcoder:
-  enabled: false
+  enabled: true
   name: transcoder
   image: playstack/transocder
   imagePullPolicy: Always

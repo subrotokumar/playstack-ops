@@ -1,0 +1,6 @@
+id = "custom-config"
+
+[allowlist]
+paths = [
+  '''helm/templates/sealedSecret.yaml''',
+]
