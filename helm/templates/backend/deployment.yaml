@@ -1,4 +1,4 @@
-{{ if .Values.backend.enabled }}
+{{- if .Values.backend.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -20,34 +20,34 @@ spec:
         app: {{ .Chart.Name }}-{{ .Values.backend.name }}
     spec:
       imagePullSecrets:
-      - name: playstack-image-registry-sk
+        - name: playstack-image-registry-sk
       containers:
-      - name: {{ .Chart.Name }}-{{ .Values.backend.name }}
-        image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}:{{ .Values.AppVersion }}
-        imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
-        ports:
-        - containerPort: {{ .Values.service.internalPort | int }}
-        envFrom:
-        - configMapRef:
-            name: "{{ .Chart.Name }}-{{ .Values.backend.name }}-cm"
-        {{- if .Values.backend.configMapRef }}
-        {{- range .Values.backend.configMapRef }}
-        - configMapRef:
-            name: {{ $.Chart.Name }}-{{ . }}-cm
-        {{- end }}
-        {{- end }}
-        {{- range .Values.backend.secretRef }}
-        - secretRef:
-            name: {{ $.Chart.Name }}-{{ . }}-sk
-        {{- end }}
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.livenessProbe.httpGet.path }}
-            port: {{ .Values.livenessProbe.httpGet.port | int }}
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.readinessProbe.httpGet.path }}
-            port: {{ .Values.readinessProbe.httpGet.port | int }}
-        resources:     
-{{ toYaml .Values.resources | indent 10 }}
-{{ end }}
+        - name: {{ .Chart.Name }}-{{ .Values.backend.name }}
+          image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}:{{ .Values.appVersion }}
+          imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort | int }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-{{ .Values.backend.name }}-cm"
+            {{- if .Values.backend.configMapRef }}
+            {{- range .Values.backend.configMapRef }}
+            - configMapRef:
+                name: {{ $.Chart.Name }}-{{ . }}-cm
+            {{- end }}
+            {{- end }}
+            {{- range .Values.backend.secretRef }}
+            - secretRef:
+                name: {{ $.Chart.Name }}-{{ . }}-sk
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.httpGet.path }}
+              port: {{ .Values.livenessProbe.httpGet.port | int }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.httpGet.path }}
+              port: {{ .Values.readinessProbe.httpGet.port | int }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+{{- end }}
