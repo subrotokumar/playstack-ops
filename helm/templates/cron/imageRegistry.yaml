@@ -11,12 +11,15 @@ metadata:
     app.kubernetes.io/environment: {{ .Values.environment }}
 spec:
   schedule: {{ .Values.imageRegistryCron.schedule | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           serviceAccountName: {{ $.Chart.Name }}-ecr-refresh-sa
-          restartPolicy: OnFailure
+          restartPolicy: Never
           containers:
             - name: refresh
               image: public.ecr.aws/aws-cli/aws-cli:latest
