@@ -21,11 +21,11 @@ spec:
         restartPolicy: Never
         containers:
           - name: {{ .Chart.Name }}-{{ .Values.transcoder.name }}
-            image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.backend.name }}
+            image: {{ .Values.registry }}/{{ .Chart.Name }}/{{ .Values.transcoder.name }}:{{ .Values.AppVersion }}
             envFrom:
             - configMapRef:
                 name: "{{ .Chart.Name }}-{{ .Values.transcoder.name }}-cm"
-            {{- range .Values.backend.configMapRef }}
+            {{- range .Values.transcoder.configMapRef }}
             - configMapRef:
                 name: {{ $.Chart.Name }}-{{ . }}-cm
             {{- end }}

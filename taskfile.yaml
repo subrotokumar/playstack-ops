@@ -42,6 +42,11 @@ tasks:
         | kubeseal --cert ~/.config/sealedsecret/cert.pem -o yaml --allow-empty-data \
         > helm/templates/sealedSecret.yaml
   
+  kubeseal:apply:
+    silent: true
+    cmds:
+      - kubectl apply -f helm/templates/sealedSecret.yaml
+  
   imagesecret:
     silent: true
     cmds:
@@ -52,7 +57,6 @@ tasks:
                     --docker-username=AWS \
                     --docker-password="${ECR_PASSWORD}" \
                     --namespace playstack
-
 
   decrypt:
     silent: true
