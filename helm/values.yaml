@@ -3,8 +3,7 @@ namespace: playstack
 registry: 298228976419.dkr.ecr.ap-south-1.amazonaws.com
 syncSecret: false
 imageRegistrySecret: image-registry
-appVersion: 0.1.0
-
+appVersion: fb9d8547
 backend:
   enabled: true
   name: backend
@@ -17,45 +16,36 @@ backend:
     - aws
     - cognito
     - s3
-
 service:
   type: ClusterIP
   internalPort: 8080
   externalPort: 8080
-
 transcoder:
   enabled: true
   name: transcoder
   image: playstack/transocder
   imagePullPolicy: Always
-
   maxReplicaCount: 3
   pollingInterval: 5
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 5
-
-  trigger: 
+  trigger:
     type: aws-sqs-queue
     queueURL: https://sqs.ap-south-1.amazonaws.com/298228976419/playstack-bucket-trigger-queue
     queueLength: "1"
     awsRegion: ap-south-1
-
   configMapRef: []
   secretRef:
     - aws
-
   triggerAuthorization:
     name: aws-auth
     secretTarget: aws
-  
   requests:
     cpu: "250m"
     memory: "250Mi"
   limits:
     cpu: "1"
     memory: "500Mi"
-
-
 imageRegistryCron:
   enabled: true
   name: rotate-image-registry
@@ -63,47 +53,42 @@ imageRegistryCron:
   awsRegion: ap-south-1
   secretRef:
     - aws
-
 serviceAccount:
   create: true
   automount: true
   annotations: {}
   name: ""
-
 podAnnotations: {}
 podLabels: {}
-
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
-
 httpRoute:
   enabled: false
   annotations: {}
   parentRefs:
-  - name: app-gateway
-    # sectionName: http
+    - name: app-gateway
+      # sectionName: http
   hostnames:
-  - api.playstack.subrotokumar.com
+    - api.playstack.subrotokumar.com
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /auth
-    - path:
-        type: PathPrefix
-        value: /media
-    backendRefs:
-    - name: backend
-      port: 8080
-
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /auth
+        - path:
+            type: PathPrefix
+            value: /media
+      backendRefs:
+        - name: backend
+          port: 8080
 resources:
   requests:
     cpu: 100m
@@ -111,8 +96,6 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
-
-
 livenessProbe:
   httpGet:
     path: /health/liveness
@@ -121,27 +104,23 @@ readinessProbe:
   httpGet:
     path: /health/readiness
     port: 8080
-
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
-
 volumes: []
-  # - name: foo
-  #   secret:
-  #     secretName: mysecret
-  #     optional: false
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
 
 volumeMounts: []
-  # - name: foo
-  #   mountPath: "/etc/foo"
-  #   readOnly: true
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
