@@ -172,5 +172,4 @@ tasks:
 
   helm:template:
     silent: true
-    dir: k8s
-    cmds: [helm template playstack ./helm]
+    cmds: [helm template playstack helm  -f helm/values.yaml]
