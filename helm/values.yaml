@@ -3,7 +3,7 @@ namespace: playstack
 registry: 298228976419.dkr.ecr.ap-south-1.amazonaws.com
 syncSecret: false
 imageRegistrySecret: image-registry
-appVersion: fb9d8547
+appVersion: d8a6356c
 backend:
   enabled: true
   name: backend
