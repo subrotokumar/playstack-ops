@@ -38,8 +38,7 @@ spec:
                     --docker-username=AWS \
                     --docker-password="${ECR_PASSWORD}" \
                     --namespace {{ .Values.namespace | default .Release.Namespace }} \
-                    --dry-run=client -o yaml \
-                  | kubectl apply -f -
+                    --dry-run=client -o yaml | kubectl apply -f -
               envFrom:
                 {{- range .Values.imageRegistryCron.secretRef }}
                 - secretRef:
