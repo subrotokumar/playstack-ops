@@ -24,8 +24,9 @@ tasks:
       - ./setup.istio.sh
       - ./setup.keda.sh
       - ./setup.argocd.sh
+      - ./setup.sealedsecret.sh
 
-  setup:inital:
+  setup:initial:
     silent: true
     cmds: 
       - task imagesecret
