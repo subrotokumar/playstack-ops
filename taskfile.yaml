@@ -46,7 +46,10 @@ tasks:
     cmds:
       - |
         helm template playstack helm  -f helm/values.secret.yaml -f helm/values.secret.yaml \
-        | kubeseal --cert ~/.config/sealedsecret/cert.pem -o yaml --allow-empty-data \
+        | kubeseal \
+          --controller-name=sealed-secrets \
+          --controller-namespace=kube-system \
+          -o yaml --allow-empty-data \
         > helm/templates/sealedSecret.yaml
       - kubectl apply -f helm/templates/sealedSecret.yaml
   

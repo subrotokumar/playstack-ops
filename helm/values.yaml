@@ -4,6 +4,7 @@ registry: 298228976419.dkr.ecr.ap-south-1.amazonaws.com
 syncSecret: false
 imageRegistrySecret: image-registry
 appVersion: d8a6356c
+environment: dev
 backend:
   enabled: true
   name: backend
@@ -49,7 +50,7 @@ transcoder:
 imageRegistryCron:
   enabled: true
   name: rotate-image-registry
-  schedule: "* */6 * * *"
+  schedule: "0 */6 * * *"
   awsRegion: ap-south-1
   secretRef:
     - aws

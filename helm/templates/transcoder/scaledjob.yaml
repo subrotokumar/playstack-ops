@@ -46,7 +46,7 @@ spec:
       authenticationRef:
         name: {{ .Chart.Name }}-{{ .Values.transcoder.triggerAuthorization.name }}-ta
       metadata:
-        queueURL: "{{ .Values.transcoder.trigger.queueURL }}"
-        queueLength: {{ .Values.transcoder.trigger.queueLength | int }}
-        awsRegion: {{ .Values.transcoder.trigger.awsRegion }}
+        queueURL: {{ .Values.transcoder.trigger.queueURL | quote }}
+        queueLength: {{ .Values.transcoder.trigger.queueLength | quote }}
+        awsRegion: {{ .Values.transcoder.trigger.awsRegion | quote }}
 {{- end }}

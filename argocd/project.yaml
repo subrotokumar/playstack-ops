@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://gitlab.com/subrotokumar/playstack-ops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/
     helm:
       valueFiles:
